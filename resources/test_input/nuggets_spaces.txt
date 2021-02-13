@@ -1,0 +1,6 @@
+LastName FirstName Email FavoriteColor DateOfBirth
+Jokic Nikola jokic@nuggets.com red 2/19/1995
+Murray Jamal murray@nuggets.com yellow 2/23/1997
+Porter Michael mpj@nuggets.com black 6/29/1998
+Harris Gary harris@nuggets.com blue 9/14/1994
+Bol Bol bol@nuggets.com green 11/16/1999

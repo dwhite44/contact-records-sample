@@ -1,0 +1,6 @@
+LastName | FirstName | Email | FavoriteColor | DateOfBirth
+Leonard | Kawhi | kawhi@clippers.com | blue | 6/29/1991
+George | Paul | paul.george@clippers.com | red | 5/2/1990
+Williams | Lou | lou.williams@clippers.com | black | 10/27/1986
+Ibaka | Serge | serge@clippers.com | orange | 9/18/1989
+Zubac | Ivica | ivica.zubac@clippers.com | green | 3/18/1997
