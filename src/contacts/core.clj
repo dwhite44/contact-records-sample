@@ -1,4 +1,5 @@
-(ns contacts.core)
+(ns contacts.core
+  (:require [contacts.reader :as reader]))
 
 (defn sort-contacts
   "Sorts contacts by the given sort key:
@@ -16,8 +17,10 @@
     :last-name (sort-by :last-name #(compare %2 %1) coll)
     :else (throw (Exception. (str "Invalid sort key " sort-key)))))
 
-(defn import
+(defn import-contacts
   [input-file {:keys [sort]
                :or {sort :email}}]
   {:pre [(some #{sort} [:email :birth-date :last-name])]}
-  (println "Going to read" input-file "and sort by" (name sort)))
+  (->> (slurp input-file)
+       reader/read-contact-file-contents
+       (sort-contacts sort)))
