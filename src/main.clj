@@ -2,6 +2,7 @@
   (:require [clojure.string :as str]
             [contacts
              [core :as core]
+             [system :as sys]
              [writer :as writer]])
   (:gen-class))
 
@@ -9,7 +10,10 @@
   []
   (println "To run the importer:
 importer [options] <input-file>
-  --sort How to sort the output (email | birth | lastname)"))
+  --sort How to sort the output (email | birth | lastname)
+
+api [options]
+  --port Port to run api server on (defaults to 80)"))
 
 (defn- validate-import-args
   [args]
@@ -42,14 +46,31 @@ importer [options] <input-file>
       (do
         (prn error)
         (System/exit -1))
-      (->> (core/import-contacts input-file (select-keys opts [:sort]))
-           writer/print-contacts))))
+      (let [system (sys/new-system {})]
+        (->> (core/import-contacts system input-file (select-keys opts [:sort]))
+             writer/print-contacts)))))
+
+(defn- run-api
+  [args]
+  (let [port-str (when (and (= 2 (count args))
+                            (= "--port" (str/lower-case (first args))))
+                   (second args))
+        port (when port-str (try
+                              (Integer/parseInt port-str)
+                              (catch Throwable t
+                                (println "Invalid port: must be numeric")
+                                (System/exit -1))))]
+    (.addShutdownHook (Runtime/getRuntime)
+                      (Thread. (fn []
+                                 (sys/stop-api-system (sys/get-system)))))
+    (sys/start-api-system {:api-port port})))
 
 (defn -main
   [& args]
   (let [run-type (first args)]
     (cond
       (= "import" run-type) (run-import (rest args))
+      (= "api" run-type) (run-api (rest args))
       (= "help" run-type) (print-usage)
       (empty? run-type) (do
                           (print-usage)

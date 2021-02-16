@@ -18,8 +18,8 @@
     :else (throw (Exception. (str "Invalid sort key " sort-key)))))
 
 (defn import-contacts
-  [input-file {:keys [sort]
-               :or {sort :email}}]
+  [system input-file {:keys [sort]
+                      :or {sort :email}}]
   {:pre [(some #{sort} [:email :birth-date :last-name])]}
   (->> (slurp input-file)
        reader/read-contact-file-contents
