@@ -1,5 +1,6 @@
 (ns contacts.core
-  (:require [contacts.reader :as reader]))
+  (:require [contacts.core.memory-store :as store]
+            [contacts.reader :as reader]))
 
 (defn sort-contacts
   "Sorts contacts by the given sort key:
@@ -17,6 +18,12 @@
     :last-name (sort-by :last-name #(compare %2 %1) coll)
     :else (throw (Exception. (str "Invalid sort key " sort-key)))))
 
+(defn import-contact
+  "Imports a single contact from a single delimited string"
+  [s]
+  (when-let [delimiter (reader/determine-delimiter s)]
+    (reader/read-contact-line s delimiter reader/default-field-order)))
+
 (defn import-contacts
   [system input-file {:keys [sort]
                       :or {sort :email}}]
@@ -24,3 +31,25 @@
   (->> (slurp input-file)
        reader/read-contact-file-contents
        (sort-contacts sort)))
+
+(defn validate-contact
+  "Determines whether a contact is valid. Returns a map with :valid? true | false
+   and optionally :error"
+  [contact system]
+  (let [error (cond
+                (not (contains? contact :last-name)) "Email is Required"
+                (not (contains? contact :first-name)) "First Name is Required"
+                (not (contains? contact :last-name)) "Last Name is Required"
+                (not (contains? contact :birth-date)) "Birth Date is Required"
+                :else nil)]
+    {:valid? (nil? error)
+     :error error}))
+
+(defn store-contact!
+  "Takes a contact and adds it to storage"
+  [contact {:keys [store] :as system}]
+  (let [{:keys [valid? error]} (validate-contact contact system)]
+    (when valid? (store/add-contact! contact store))
+    {:success? valid?
+     :error error}))
+

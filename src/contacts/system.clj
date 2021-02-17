@@ -1,5 +1,6 @@
 (ns contacts.system
-  (:require [contacts.http :as http]))
+  (:require [contacts.core.memory-store :as store]
+            [contacts.http :as http]))
 
 (def current-system (atom nil))
 
@@ -9,7 +10,8 @@
 (defn new-system
   [opts]
   {:dev? true
-   :log-level :INFO})
+   :log-level :INFO
+   :store (store/new-memory-store)})
 
 (defn start-api-system
   [{:keys [api-port] :as opts}]

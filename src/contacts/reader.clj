@@ -2,11 +2,14 @@
   (:require [clojure.string :as str]
             [contacts.dates :as dt]))
 
+(def default-field-order [:last-name :first-name :email :favorite-color :birth-date])
+
 (defn determine-delimiter
   "Takes a string and determines the character it is delimited by. Returns
    the character (Pipe, comma, or space"
   [header-line]
   (cond
+    (empty? header-line) nil
     (str/index-of header-line "|") "\\|"
     (str/index-of header-line ",") ","
     :else " "))
@@ -16,7 +19,7 @@
    Hardcoded for now as input files have fixed order. Could change to
    allow input files with columns in any order"
   [header-line delimiter]
-  [:last-name :first-name :email :favorite-color :birth-date])
+  default-field-order)
 
 (defn- format-value
   [k v]

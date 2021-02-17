@@ -16,6 +16,16 @@
     (let [new-req (assoc req :system system)]
       (handler new-req))))
 
+(defn wrap-body-string
+  [handler]
+  (fn [req]
+    (let [body (:body req)
+          new-req (cond-> req
+                    body (assoc :body-str (try
+                                            (slurp body)
+                                            (catch Throwable t nil))))]
+      (handler new-req))))
+
 (defn wrap-formats
   [handler]
   (format/wrap-restful-format handler {:formats [:json]}))
@@ -25,5 +35,6 @@
   (-> handler
       (wrap-dev system)
       wrap-formats
+      wrap-body-string
       (wrap-system system)
       (defaults/wrap-defaults defaults/api-defaults)))
