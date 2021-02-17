@@ -4,30 +4,29 @@ Application to read in files of contacts and sort them by various field and an
 api to add and retrieve contacts.
 
 
-## Usage
-
-Run Import:
+## Import Usage
 
     $ java -jar contacts-0.1.0-standalone.jar import [options] <input-file>
     dev: lein run import [options] <input-file>
 
-## Options
+Options
+    
+    --sort: email: Sorts descending by email and ascending by last name.
+            birth: Sorts asending by birth date.
+            lastname: Sorts descending by last name.
+            
+Examples
+    
+    $ java -jar contacts-0.1.0-standalone.jar import --sort resources/test_input/mavericks.csv
 
-    --sort: email: Sorts descending by email and ascending by last name
-            birth: Sorts asending by birth date
-            lastname: Sorts descending by last name
+## Run Api:
 
-Run Api:
     $ java -jar contacts-0.1.0-standalone.jar api [options]
     dev: lein run api [options]
 
-## Options
-   --port Port to run api server on (defaults to 80)
-
-## Examples
-    java -jar contacts-0.1.0-standalone.jar import --sort resources/test_input/mavericks.csv
-...
-
+Options
+   
+    --port: Port to run api server on (defaults to 80)
 
 ### Compiling into Jar
     lein uberjar
