@@ -5,8 +5,10 @@
 
 (defn all-contacts
   [{!records :contacts :as store}]
-  @!records)
+  (when !records
+    @!records))
 
 (defn add-contact!
   [contact {!records :contacts :as store}]
-  (swap! !records conj contact))
+  (when !records
+    (swap! !records conj contact)))

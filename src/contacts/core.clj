@@ -54,3 +54,10 @@
     {:success? valid?
      :error error}))
 
+(defn find-contacts
+  [store {:keys [sort]}]
+  (let [records (store/all-contacts store)]
+    (if sort
+      (sort-contacts sort records)
+      records)))
+
