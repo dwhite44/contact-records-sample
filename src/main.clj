@@ -2,8 +2,8 @@
   (:require [clojure.string :as str]
             [contacts
              [core :as core]
-             [system :as sys]
-             [writer :as writer]])
+             [system :as sys]]
+            [contacts.core.writer :as writer])
   (:gen-class))
 
 (defn- print-usage

@@ -1,6 +1,7 @@
 (ns contacts.core
-  (:require [contacts.core.memory-store :as store]
-            [contacts.reader :as reader]))
+  (:require [contacts.core
+             [memory-store :as store]
+             [reader :as reader]]))
 
 (defn sort-contacts
   "Sorts contacts by the given sort key:

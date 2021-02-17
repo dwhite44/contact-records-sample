@@ -1,9 +1,8 @@
-(ns contacts.reader-test
+(ns contacts.core.reader-test
   (:require [clojure.java.io :as io]
             [clojure.test :refer [deftest testing is]]
-            [contacts
-             [dates :as dt]
-             [reader :as reader]]))
+            [contacts.core.reader :as reader]
+            [contacts.dates :as dt]))
 
 (deftest read-contact-file-contents-tests
   (testing "Reading in csv format"

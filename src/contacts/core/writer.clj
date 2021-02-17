@@ -1,4 +1,4 @@
-(ns contacts.writer
+(ns contacts.core.writer
   (:require [clojure.string :as str]
             [contacts.dates :as dt]))
 
