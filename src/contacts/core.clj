@@ -1,7 +1,8 @@
 (ns contacts.core
   (:require [contacts.core
              [memory-store :as store]
-             [reader :as reader]]))
+             [reader :as reader]]
+            [clojure.string :as str]))
 
 (defn sort-contacts
   "Sorts contacts by the given sort key:
@@ -12,11 +13,11 @@
   (case sort-key
     :email (sort #(let [email-compare (compare (:email %2) (:email %1))]
                     (if (= 0 email-compare)
-                      (compare (:last-name %1) (:last-name %2))
+                      (compare (:last-name (str/lower-case %1)) (:last-name (str/lower-case %2)))
                       email-compare))
                  coll)
     :birth-date (sort-by :birth-date coll)
-    :last-name (sort-by :last-name #(compare %2 %1) coll)
+    :last-name (sort-by :last-name #(compare (str/lower-case %2) (str/lower-case %1)) coll)
     :else (throw (Exception. (str "Invalid sort key " sort-key)))))
 
 (defn import-contact
