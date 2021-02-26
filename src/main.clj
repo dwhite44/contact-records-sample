@@ -23,11 +23,11 @@ api [options]
         sort-str (when (and (= 2 (count opts))
                             (= "--sort" (str/lower-case (first opts))))
                    (str/lower-case (second opts)))
-        sort (case (str/lower-case sort-str)
-               "email" :email
-               "birth" :birth-date
-               "lastname" :last-name
-               nil)
+        sort (when sort-str (case (str/lower-case sort-str)
+                              "email" :email
+                              "birth" :birth-date
+                              "lastname" :last-name
+                              nil))
         input-file (last args)
         err (cond
               (nil? input-file) "Requires an input file"
