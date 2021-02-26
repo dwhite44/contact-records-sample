@@ -12,9 +12,10 @@
                         :first-name "Luka"
                         :email "luka@mavs.com"
                         :favorite-color "blue"
-                        :birth-date (dt/new-date 1999 2 28)}]
+                        :birth-date (dt/new-date 1999 2 28)}
+          result (first data)]
       (is (= 5 (count data)))
-      (is (= expected-rec (first data)))))
+      (is (= expected-rec result))))
 
   (testing "Reading in pipe format"
     (let [contents (slurp (io/resource "test_input/clippers_pipe.txt"))

@@ -14,12 +14,21 @@
     (str/index-of header-line ",") ","
     :else " "))
 
+(def header-map
+  {"LastName" :last-name
+   "FirstName" :first-name
+   "Email" :email
+   "FavoriteColor" :favorite-color
+   "DateOfBirth" :birth-date})
+
 (defn determine-header-order
   "Takes a string and calculates the field order from the field names.
    Hardcoded for now as input files have fixed order. Could change to
    allow input files with columns in any order"
   [header-line delimiter]
-  default-field-order)
+  (let [valid-headers ["LastName" "FirstName" "Email" "FavoriteColor" "DateOfBirth"]]
+    (->> (str/split header-line (re-pattern delimiter))
+         (map #(get header-map (str/trim %))))))
 
 (defn- format-value
   [k v]
